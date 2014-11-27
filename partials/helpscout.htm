@@ -1,0 +1,14 @@
+<h4><a href="<?= site_url('/backdoor/shop/customers/preview/' . $customer->id) ?>"><?= h($customer->full_name) ?></a></h4>
+<ul>
+	<li>&pound;<?= array_sum($paid_orders->as_array('total')) ?> lifetime value</li>
+	<li>Customer since <?= h($customer->created_at->format('%x')) ?></li>
+	<li><?= $customer->orders->count() ?> orders (<?= count($paid_orders) ?> paid)</li>
+</ul>
+<h4>Recent Orders (Showing <?= $customer->orders_list->limit(10)->find_all()->count() ?> of <?= $customer->orders->count() ?>)</h4>
+<ul class="unstyled">
+	<? foreach ($customer->orders_list->limit(10)->find_all() as $order) : ?>
+	<li>
+		<span class="<?= ($order->is_paid() ? 'green' : 'red') ?>"><?= $order->order_datetime->format('%x') ?></span> - 
+		&pound;<?= $order->total ?> (<a href="<?= site_url('/backdoor/shop/orders/preview/' . $order->id) ?>">#<?= $order->id ?></a>)</li>
+	<? endforeach; ?>
+</ul>
